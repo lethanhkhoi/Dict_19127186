@@ -13,7 +13,7 @@ import java.util.Vector;
  * Description: ...
  */
 public class SlangWords {
-    Map<String, Vector<String>> words;
+    Map<String, HashMap<Integer,String>> words;
 
     SlangWords() {
         try {
@@ -24,22 +24,28 @@ public class SlangWords {
     }
     public void import_file(String filename) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader(filename));
-        words = new HashMap<String, Vector<String>>();
+        words = new HashMap<String, HashMap<Integer,String>>();
         String line =br.readLine();
         line=br.readLine();
-        System.out.println(line);
+
         while(line!=null) {
+            int i =0;
             String str[] = line.split("`");
             String key = str[0];
-            System.out.println(key);
             if (words == null || words.get(key) == null) {
-                Vector<String> values = new Vector<String>();
-                values.add(str[1]);
+                HashMap<Integer,String> values = new HashMap<Integer,String>();
+                values.put(i,str[1]);
                 words.put(key, values);
 
             } else {
                 if (words.get(key) != null) {
-                    words.get(key).add(str[1]);
+                    System.out.println(words.get(key));
+                    i=words.get(key).size();System.out.println("i: "+i);
+                    HashMap<Integer,String> values = words.get(key);
+                    values.put(i,str[1]);
+                    System.out.println("i=0: "+values.get(i-1));
+                    System.out.println("i=1: "+values.get(i));
+                    words.replace(key, values);
                 }
             }
             line = br.readLine();
@@ -47,7 +53,16 @@ public class SlangWords {
     }
     public Vector<String> find(String slangwords){
         Vector<String>temp = new Vector<String>();
-        temp=words.get(slangwords);
+        for(int i =0;i<words.get(slangwords).size();i++)
+        {
+            temp.add(words.get(slangwords).get(i));
+        }
+        return temp;
+    }
+    public Vector<String> find_byDefinition(String difi){
+        Vector<String>temp = new Vector<String>();
+
+
         return temp;
     }
 }

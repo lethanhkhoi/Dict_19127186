@@ -13,8 +13,8 @@ import java.util.Vector;
  * Description: ...
  */
 public class SlangWords {
-    Map<String, HashMap<Integer,String>> words;
-
+    Map<String, Vector<String>> words;
+    Map<String,Vector<String>> history;
     SlangWords() {
         try {
             this.import_file("data.txt");
@@ -24,28 +24,22 @@ public class SlangWords {
     }
     public void import_file(String filename) throws IOException{
         BufferedReader br = new BufferedReader(new FileReader(filename));
-        words = new HashMap<String, HashMap<Integer,String>>();
+        words = new HashMap<String, Vector<String>>();
+        history=new HashMap<String,Vector<String>>();
         String line =br.readLine();
         line=br.readLine();
 
         while(line!=null) {
-            int i =0;
             String str[] = line.split("`");
             String key = str[0];
             if (words == null || words.get(key) == null) {
-                HashMap<Integer,String> values = new HashMap<Integer,String>();
-                values.put(i,str[1]);
+                Vector<String> values = new Vector<String>();
+                values.add(str[1]);
                 words.put(key, values);
 
             } else {
                 if (words.get(key) != null) {
-                    System.out.println(words.get(key));
-                    i=words.get(key).size();System.out.println("i: "+i);
-                    HashMap<Integer,String> values = words.get(key);
-                    values.put(i,str[1]);
-                    System.out.println("i=0: "+values.get(i-1));
-                    System.out.println("i=1: "+values.get(i));
-                    words.replace(key, values);
+                    words.get(key).add(str[1]);
                 }
             }
             line = br.readLine();
@@ -57,12 +51,58 @@ public class SlangWords {
         {
             temp.add(words.get(slangwords).get(i));
         }
+        history.put(slangwords,temp);
         return temp;
     }
     public Vector<String> find_byDefinition(String difi){
         Vector<String>temp = new Vector<String>();
-
-
+        for(Map.Entry<String,Vector<String>> entry:words.entrySet()){
+            for(int i = 0;i<entry.getValue().size();i++){
+                if(entry.getValue().get(i).contains(difi)){
+                    temp.add(entry.getValue().get(i));
+                }
+            }
+        }
         return temp;
+    }
+    public void add_newWord(String slangword,String value){
+
+        if(words.get(slangword)==null){
+            Vector<String>values = new Vector<String>();
+            values.add(value);
+            words.put(slangword,values);
+        }
+        else{
+            words.get(slangword).add(value);
+        }
+    }
+    public boolean edit_Word(String slangword,int index,String new_value){
+        if(words.get(slangword)==null){
+            return false;
+        }
+        else{
+            words.get(slangword).set(index,new_value);
+            return true;
+        }
+    }
+    public boolean delete(String slangword,int index){
+        if(words.get(slangword)==null){
+            return false;
+        }
+        else{
+            words.get(slangword).remove(index);
+            if(words.get(slangword).size()==0){
+                words.remove(slangword);
+            }
+            return true;
+        }
+    }
+    public boolean delete(String slangword){
+        if(words.get(slangword)==null){
+            return false;
+        }else{
+            words.remove(slangword);
+            return true;
+        }
     }
 }

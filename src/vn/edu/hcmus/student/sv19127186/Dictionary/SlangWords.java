@@ -1,10 +1,7 @@
 package vn.edu.hcmus.student.sv19127186.Dictionary;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * vn.edu.hcmus.student.sv19127186.Dictionary
@@ -14,6 +11,7 @@ import java.util.Vector;
  */
 public class SlangWords {
     Map<String, Vector<String>> words;
+    Vector<String> order;
     Map<String,Vector<String>> history;
     SlangWords() {
         try {
@@ -26,6 +24,7 @@ public class SlangWords {
         BufferedReader br = new BufferedReader(new FileReader(filename));
         words = new HashMap<String, Vector<String>>();
         history=new HashMap<String,Vector<String>>();
+        order = new Vector<String>();
         String line =br.readLine();
         line=br.readLine();
 
@@ -36,6 +35,7 @@ public class SlangWords {
                 Vector<String> values = new Vector<String>();
                 values.add(str[1]);
                 words.put(key, values);
+                order.add(key);
 
             } else {
                 if (words.get(key) != null) {
@@ -104,5 +104,10 @@ public class SlangWords {
             words.remove(slangword);
             return true;
         }
+    }
+    public String random_slangword(){
+        Random rand = new Random();
+        int num = rand.nextInt(100);
+        return order.get(num);
     }
 }

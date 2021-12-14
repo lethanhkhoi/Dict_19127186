@@ -8,11 +8,7 @@ import java.util.Vector;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-	    SlangWords dict= new SlangWords();
-        Vector<String> temp = dict.find_byDefinition("Love");
-
-        for(int i=0;i<temp.size();i++){
-            System.out.println(temp.get(i));
-        }
+	    UI ui = new UI();
+        ui.createGUI();
     }
 }

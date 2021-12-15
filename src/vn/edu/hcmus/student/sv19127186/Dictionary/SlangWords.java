@@ -47,9 +47,11 @@ public class SlangWords {
     }
     public Vector<String> find(String slangwords){
         Vector<String>temp = new Vector<String>();
+        if(words.get(slangwords)==null)
+            return null;
         for(int i =0;i<words.get(slangwords).size();i++)
         {
-            temp.add(words.get(slangwords).get(i));
+            temp.add(slangwords+" - "+words.get(slangwords).get(i));
         }
         history.put(slangwords,temp);
         return temp;
@@ -59,7 +61,8 @@ public class SlangWords {
         for(Map.Entry<String,Vector<String>> entry:words.entrySet()){
             for(int i = 0;i<entry.getValue().size();i++){
                 if(entry.getValue().get(i).contains(difi)){
-                    temp.add(entry.getValue().get(i));
+                    String str = entry.getValue().get(i);
+                    temp.add(entry.getKey()+" - "+str);
                 }
             }
         }
@@ -116,5 +119,23 @@ public class SlangWords {
         String temp = order.get(num);
         Vector<String> tmp = words.get(temp);
         return tmp.get(rand.nextInt(tmp.size()-1));
+    }
+
+    public boolean export_file(String filename,String slangword,String meaning){
+        try {
+            FileWriter fow= new FileWriter(filename);
+            String str = "Slag`Meaning";
+            fow.write(str);
+            for(Map.Entry<String,Vector<String>> entry:words.entrySet()){
+                for(int i =0;i<entry.getValue().size();i++){
+                    str= "\n"+entry.getKey()+"`"+entry.getValue().get(i);
+                    fow.write(str);
+                }
+            }
+            fow.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

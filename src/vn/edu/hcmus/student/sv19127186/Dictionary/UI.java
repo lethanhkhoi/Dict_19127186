@@ -6,6 +6,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Vector;
 
@@ -15,6 +16,8 @@ import java.util.Vector;
  * Date 14/12/2021 - 11:48 PM
  * Description: ...
  */
+
+
 public class UI extends JPanel implements ActionListener{
     private JButton add;
     private JButton delete;
@@ -26,11 +29,15 @@ public class UI extends JPanel implements ActionListener{
     private JButton search_slang;
     private JButton search_difi;
     private JTextField search;
+    SlangWords dict;
 
     private JList list;
+    private add_UI add_ui;
 
     UI()
     {
+
+        dict=new SlangWords();
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(500,350));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,14 +111,11 @@ public class UI extends JPanel implements ActionListener{
         import_.setPreferredSize(new Dimension(141, 26));
         import_.setActionCommand("import");
         chucnang.add(import_,gbc);
-        
+
         gbc.gridy++;
         gbc.gridx=0;
         reset_.setPreferredSize(new Dimension(141, 26));
         chucnang.add(reset_,gbc);
-
-
-
         JPanel footerpanel = new JPanel();
         footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
         footerpanel.add(play_slangword);
@@ -124,6 +128,9 @@ public class UI extends JPanel implements ActionListener{
 
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(temp);
+
+
+
         JPanel header = new JPanel(new FlowLayout());
         JLabel name = new JLabel("Dictionary", SwingConstants.CENTER);
         name.setForeground(Color.red);
@@ -136,6 +143,8 @@ public class UI extends JPanel implements ActionListener{
         add(panel,BorderLayout.SOUTH);
         import_.addActionListener(this);
 
+        search_slang.addActionListener(this);
+        search_difi.addActionListener(this);
         play_slangword.addActionListener(this);
         play_difinition.addActionListener(this);
         add.addActionListener(this);
@@ -160,5 +169,37 @@ public class UI extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
+        if (command == "slang") {
+            String str = search.getText();
+            if(str.length()==0)
+                return;
+            Vector<String> temp = dict.find(str);
+            if(temp!=null)
+                list.setListData(temp);
+            else{
+                JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if(command=="difinition"){
+            String str = search.getText();
+            if(str.length()==0)
+                return;
+            Vector<String> temp = dict.find_byDefinition(str);
+            list.setListData(temp);
+        }
+        if(command =="RESET"){
+            try {
+                dict.import_file("slang.txt");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if(command=="ADD"){
+            add_ui= new add_UI(dict);
+
+        }
+        if(command=="DELETE"){
+
+        }
     }
 }

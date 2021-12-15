@@ -19,17 +19,20 @@ public class UI extends JPanel implements ActionListener{
     private JButton add;
     private JButton delete;
     private JButton update;
-    private JButton sort_GPA;
-    private JButton sort_id;
+    private JButton play_slangword;
+    private JButton play_difinition;
     private JButton import_;
-    private JButton export_;
-    private JButton save_;
+    private JButton reset_;
+    private JButton search_slang;
+    private JButton search_difi;
+    private JTextField search;
 
+    private JList list;
 
     UI()
     {
         setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(750,350));
+        setMinimumSize(new Dimension(500,350));
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx=0;
@@ -40,70 +43,105 @@ public class UI extends JPanel implements ActionListener{
         delete.setActionCommand("DELETE");
         update = new JButton("update");
         update.setActionCommand("UPDATE");
-        sort_GPA = new JButton("sort_GPA");
-        sort_id = new JButton("sort_id");
+        play_slangword = new JButton("play game with slangword");
+        play_difinition = new JButton("play game with difinition");
         import_ = new JButton("import");
-        export_ = new JButton("export");
-        save_ =new JButton("save");
-        save_.setActionCommand("SAVE");
+        reset_ =new JButton("reset");
+        reset_.setActionCommand("RESET");
+        search_slang=new JButton("Search slang word");
+        search_slang.setActionCommand("slang");
+        search_difi=new JButton("Search difinition");
+        search_difi.setActionCommand("difinition");
 
         JPanel chucnang = new JPanel(new GridBagLayout());
 
         //
+        list = new JList();
+        Vector<String> words=new Vector<String>();
+        list.setListData(words);
+
+        //
+        gbc= new GridBagConstraints();
+        gbc.gridx=0;
+        gbc.gridy=0;
+        gbc.anchor= GridBagConstraints.EAST;
+        gbc.insets = new Insets(5,5,5,5);
+        chucnang.add(new JLabel("Search:"),gbc);
+
+        search = new JTextField(12);
+        gbc.gridx=1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        chucnang.add(search,gbc);
 
         gbc = new GridBagConstraints();
         gbc.anchor= GridBagConstraints.WEST;
-        gbc.gridy=7;
+        gbc.gridy=1;
         gbc.gridx=0;
         gbc.insets = new Insets(5,5,5,5);
+        chucnang.add(search_slang,gbc);
+        gbc.gridx++;
+        search_difi.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(search_difi,gbc);
+
+        gbc = new GridBagConstraints();
+        gbc.anchor= GridBagConstraints.WEST;
+        gbc.gridy=2;
+        gbc.gridx=0;
+        gbc.insets = new Insets(5,5,5,5);
+        add.setPreferredSize(new Dimension(141, 26));
         chucnang.add(add,gbc);
         gbc.gridx++;
 
-        JPanel tmp = new JPanel();
-        tmp.setLayout(new BoxLayout(tmp,BoxLayout.LINE_AXIS));
-        tmp.add(update);
-        tmp.add(Box.createRigidArea(new Dimension(20,0)));
-        tmp.add(delete);
-        chucnang.add(tmp,gbc);
+        update.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(update,gbc);
+
         gbc.gridy++;
         gbc.gridx=0;
         gbc.insets = new Insets(5,5,5,5);
-        chucnang.add(save_,gbc);
+        delete.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(delete,gbc);
         gbc.gridx++;
-
-
-        JPanel tmp1 = new JPanel();
-        tmp1.setLayout(new BoxLayout(tmp1,BoxLayout.LINE_AXIS));
-        tmp1.add(import_);
+        import_.setPreferredSize(new Dimension(141, 26));
         import_.setActionCommand("import");
-        tmp1.add(Box.createRigidArea(new Dimension(20,0)));
-        tmp1.add(export_);
-        chucnang.add(tmp1,gbc);
-        export_.setActionCommand("export");
+        chucnang.add(import_,gbc);
+        
+        gbc.gridy++;
+        gbc.gridx=0;
+        reset_.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(reset_,gbc);
+
+
 
         JPanel footerpanel = new JPanel();
         footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
-        footerpanel.add(sort_GPA);
-        sort_GPA.setActionCommand("gpa");
+        footerpanel.add(play_slangword);
+        play_slangword.setActionCommand("game_slang");
         footerpanel.add(Box.createRigidArea(new Dimension(20,0)));
-        footerpanel.add(sort_id);
-        sort_id.setActionCommand("id");
+        footerpanel.add(play_difinition);
+        play_difinition.setActionCommand("game_difi");
         JPanel temp = new JPanel(new BorderLayout());
         temp.add(footerpanel,BorderLayout.LINE_END);
 
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(temp);
+        JPanel header = new JPanel(new FlowLayout());
+        JLabel name = new JLabel("Dictionary", SwingConstants.CENTER);
+        name.setForeground(Color.red);
+        name.setFont(header.getFont().deriveFont (20.0f));
+        header.add(name);
 
+        add(header,BorderLayout.PAGE_START);
         add(chucnang,BorderLayout.LINE_START);
+        add(new JScrollPane(list), BorderLayout.CENTER);
         add(panel,BorderLayout.SOUTH);
         import_.addActionListener(this);
-        export_.addActionListener(this);
-        sort_GPA.addActionListener(this);
-        sort_id.addActionListener(this);
+
+        play_slangword.addActionListener(this);
+        play_difinition.addActionListener(this);
         add.addActionListener(this);
         delete.addActionListener(this);
         update.addActionListener(this);
-        save_.addActionListener(this);
+        reset_.addActionListener(this);
     }
     public void createGUI()
     {
@@ -115,7 +153,7 @@ public class UI extends JPanel implements ActionListener{
         frame.setContentPane(this);
 
         frame.pack();
-        frame.setSize(new Dimension(780,400));
+        frame.setSize(new Dimension(700,400));
 
         frame.setVisible(true);
     }

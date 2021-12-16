@@ -4009,7 +4009,6 @@ ZONG`BONG
 ILI`I Love It
 ILL`Cool, tight, etc
 |O|`LOL
-|O|`HAHA
 DOOM`Classic FPS
 ILM`I lige m
 ILT`I Like That
@@ -5150,9 +5149,7 @@ NOYB`None Of Your Business
 CRICKETS`Said after a lame joke to break the silence
 DEFFO`Definitely
 MOTORBOATING`Nuzzling a woman's chest whilst making a noise
-<<3`HAHA
-<<3`HOHO
-<<3`HIHI
+<<3`789
 4COL`For Crying Out Loud
 AITR`Adult In The Room
 BOOZER`Public House| bar

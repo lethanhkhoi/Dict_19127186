@@ -13,6 +13,82 @@ import vn.edu.hcmus.student.sv19127186.Dictionary.*;
  * Date 15/12/2021 - 10:35 PM
  * Description: ...
  */
+class add_nofication extends JFrame implements ActionListener{
+    private SlangWords dict;
+    private JButton duplicate;
+    private JButton overwrite;
+    private JList list;
+    private String slangword_;
+    private String mean_;
+
+    add_nofication(SlangWords temp,String slangword,String mean){
+        dict=temp;
+        slangword_=slangword;
+        mean_=mean;
+        setDefaultLookAndFeelDecorated(true);
+        setTitle("Notification");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setMinimumSize(new Dimension(300,200));
+        //center
+        list= new JList();
+        JPanel panel = new JPanel(new BorderLayout());
+        Vector<String> str = dict.find(slangword);
+        list.setListData(str);
+
+        //header
+        JPanel header = new JPanel(new FlowLayout());
+        JLabel name = new JLabel("This word has existed already", SwingConstants.CENTER);
+        name.setForeground(Color.red);
+        name.setFont(header.getFont().deriveFont (20.0f));
+        header.add(name);
+
+        //footer
+        duplicate = new JButton("NEW");
+        overwrite = new JButton("OVERWRITE");
+        duplicate.setActionCommand("NEW");
+        overwrite.setActionCommand("OVERWRITE");
+
+        JPanel footerpanel = new JPanel();
+        footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
+        footerpanel.add(duplicate);
+        footerpanel.add(Box.createRigidArea(new Dimension(20,0)));
+        footerpanel.add(overwrite);
+        JPanel tmp = new JPanel(new BorderLayout());
+        tmp.add(footerpanel,BorderLayout.LINE_END);
+        JPanel panel1 = new JPanel(new FlowLayout());
+        panel1.add(tmp);
+
+        panel.add(header,BorderLayout.PAGE_START);
+        panel.add(new JScrollPane(list),BorderLayout.CENTER);
+        panel.add(panel1,BorderLayout.SOUTH);
+        add(panel);
+
+        this.pack();
+        setSize(new Dimension(300,200));
+        setVisible(true);
+        duplicate.addActionListener(this);
+        overwrite.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command =e.getActionCommand();
+        if(command=="NEW"){
+            dict.add_newWord(slangword_,mean_);
+            JOptionPane.showMessageDialog(null,"Add successfully");
+            dict.export_file("data.txt",slangword_,mean_);
+            this.hide();
+        }
+        else if(command=="OVERWRITE"){
+            int index = list.getSelectedIndex();
+            dict.edit_Word(slangword_,index,mean_);
+            JOptionPane.showMessageDialog(null,"Add successfully");
+            dict.export_file("data.txt",slangword_,mean_);
+            this.hide();
+
+        }
+    }
+}
 public class add_UI extends JFrame implements ActionListener {
     private JTextField slangword;
     private JTextField meanings;
@@ -20,13 +96,15 @@ public class add_UI extends JFrame implements ActionListener {
     private JButton okbtn;
     private JButton cancelbtn;
     SlangWords dict;
+    private add_nofication extra;
     add_UI(SlangWords temp){
         dict=temp;
         setDefaultLookAndFeelDecorated(true);
         setTitle("ADD");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setMinimumSize(new Dimension(300,200));
         JPanel panel = new JPanel(new BorderLayout());
+
 
         slangword=new JTextField(15);
         meanings = new JTextField(15);
@@ -92,9 +170,15 @@ public class add_UI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,"Please input your meanings");
                 return;
             }
-            Vector<String> temp = this.dict.find(slangword_);
-            dict.add_newWord(slangword_,mean_);
-            dict.export_file("data.txt",slangword_,mean_);
+            Vector<String>temp = dict.find(slangword_);
+            if(temp!=null)
+                extra = new add_nofication(dict,slangword_,mean_);
+            else{
+                dict.add_newWord(slangword_,mean_);
+                JOptionPane.showMessageDialog(null,"Add successfully");
+                dict.export_file("data.txt",slangword_,mean_);
+            }
+
             this.hide();
 
         }

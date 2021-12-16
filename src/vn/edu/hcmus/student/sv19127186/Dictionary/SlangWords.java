@@ -74,6 +74,7 @@ public class SlangWords {
             Vector<String>values = new Vector<String>();
             values.add(value);
             words.put(slangword,values);
+            order.add(slangword);
         }
         else{
             words.get(slangword).add(value);

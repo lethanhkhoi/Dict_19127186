@@ -13,6 +13,7 @@ public class SlangWords {
     Map<String, Vector<String>> words;
     Vector<String> order;
     Map<String,Vector<String>> history;
+    Random rand = new Random();
     SlangWords() {
         try {
             this.import_file("data.txt");
@@ -114,12 +115,10 @@ public class SlangWords {
         }
     }
     public String random_slangword(){
-        Random rand = new Random();
         int num = rand.nextInt(words.size()-1);
         return order.get(num);
     }
     public String random_difinition(){
-        Random rand = new Random();
         int num = rand.nextInt(words.size()-1);
         String temp = order.get(num);
         Vector<String> tmp = words.get(temp);

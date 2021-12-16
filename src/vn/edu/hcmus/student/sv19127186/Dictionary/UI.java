@@ -30,6 +30,7 @@ public class UI extends JPanel implements ActionListener{
     private JButton search_difi;
     private JButton history;
     private JTextField search;
+    private JButton random_;
     SlangWords dict;
 
     private JList list;
@@ -63,6 +64,8 @@ public class UI extends JPanel implements ActionListener{
         search_slang.setActionCommand("slang");
         search_difi=new JButton("Search difinition");
         search_difi.setActionCommand("difinition");
+        random_=new JButton("Random slang");
+        random_.setActionCommand("RANDOM");
 
         JPanel chucnang = new JPanel(new GridBagLayout());
 
@@ -124,6 +127,11 @@ public class UI extends JPanel implements ActionListener{
         history.setPreferredSize(new Dimension(141, 26));
         chucnang.add(history,gbc);
 
+        gbc.gridy++;
+        gbc.gridx=0;
+        random_.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(random_,gbc);
+
         JPanel footerpanel = new JPanel();
         footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
         footerpanel.add(play_slangword);
@@ -160,6 +168,7 @@ public class UI extends JPanel implements ActionListener{
         update.addActionListener(this);
         reset_.addActionListener(this);
         history.addActionListener(this);
+        random_.addActionListener(this);
     }
     public void createGUI()
     {
@@ -221,6 +230,11 @@ public class UI extends JPanel implements ActionListener{
             Vector<String>temp = dict.view_history();
             if(temp!=null)
                 list.setListData(temp);
+        }
+        else if (command=="RANDOM"){
+            String slangword = dict.random_slangword();
+            Vector<String>temp= dict.find(slangword);
+            list.setListData(temp);
         }
     }
 }

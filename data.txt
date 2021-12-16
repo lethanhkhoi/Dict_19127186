@@ -3912,6 +3912,7 @@ LOML`Love Of My Life
 LOMO`Lights Out, Missionary Only
 LOO`Toilet
 LOOL`Laughing Outlandishly Out Loud
+LOOL`hdshka
 LOONY`Crazy
 LOOT`Money
 LOP`Stupid person
@@ -7655,3 +7656,5 @@ ZZZ`Sleepy| bored| tired
 ~`Denotes Sarcasm| Put At The End Of A Word To Make It Longer
 Æ`Registered Trademark Symbol
 ô`Trademark
+<<3`HAHA
+<<3`HEHE

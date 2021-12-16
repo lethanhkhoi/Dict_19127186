@@ -28,6 +28,7 @@ public class UI extends JPanel implements ActionListener{
     private JButton reset_;
     private JButton search_slang;
     private JButton search_difi;
+    private JButton history;
     private JTextField search;
     SlangWords dict;
 
@@ -56,6 +57,8 @@ public class UI extends JPanel implements ActionListener{
         import_ = new JButton("import");
         reset_ =new JButton("reset");
         reset_.setActionCommand("RESET");
+        history = new JButton("History");
+        history.setActionCommand("HISTORY");
         search_slang=new JButton("Search slang word");
         search_slang.setActionCommand("slang");
         search_difi=new JButton("Search difinition");
@@ -117,6 +120,10 @@ public class UI extends JPanel implements ActionListener{
         gbc.gridx=0;
         reset_.setPreferredSize(new Dimension(141, 26));
         chucnang.add(reset_,gbc);
+        gbc.gridx++;
+        history.setPreferredSize(new Dimension(141, 26));
+        chucnang.add(history,gbc);
+
         JPanel footerpanel = new JPanel();
         footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
         footerpanel.add(play_slangword);
@@ -152,6 +159,7 @@ public class UI extends JPanel implements ActionListener{
         delete.addActionListener(this);
         update.addActionListener(this);
         reset_.addActionListener(this);
+        history.addActionListener(this);
     }
     public void createGUI()
     {
@@ -176,7 +184,10 @@ public class UI extends JPanel implements ActionListener{
                 return;
             Vector<String> temp = dict.find(str);
             if(temp!=null)
+            {
                 list.setListData(temp);
+                dict.update_history(str);
+            }
             else{
                 JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
             }
@@ -205,6 +216,11 @@ public class UI extends JPanel implements ActionListener{
         }
         else if(command == "UPDATE"){
             edit_ui = new edit_UI(dict);
+        }
+        else if (command=="HISTORY"){
+            Vector<String>temp = dict.view_history();
+            if(temp!=null)
+                list.setListData(temp);
         }
     }
 }

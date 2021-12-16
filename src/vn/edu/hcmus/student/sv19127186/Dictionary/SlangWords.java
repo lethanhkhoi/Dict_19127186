@@ -52,8 +52,11 @@ public class SlangWords {
         {
             temp.add(slangwords+" - "+words.get(slangwords).get(i));
         }
-        history.put(slangwords,temp);
+
         return temp;
+    }
+    public void update_history(String slangwords){
+        history.put(slangwords,words.get(slangwords));
     }
     public Vector<String> find_byDefinition(String difi){
         Vector<String>temp = new Vector<String>();
@@ -139,5 +142,15 @@ public class SlangWords {
         } catch (IOException e) {
             return false;
         }
+    }
+    public Vector<String> view_history(){
+        Vector<String>temp = new Vector<String>();
+        for(Map.Entry<String,Vector<String>> entry:history.entrySet()){
+            for(int i = 0;i<entry.getValue().size();i++){
+                String str = entry.getValue().get(i);
+                temp.add(entry.getKey()+" - "+str);
+            }
+        }
+        return temp;
     }
 }

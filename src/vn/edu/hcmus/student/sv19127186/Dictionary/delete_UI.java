@@ -13,22 +13,22 @@ import vn.edu.hcmus.student.sv19127186.Dictionary.*;
  * Date 15/12/2021 - 10:35 PM
  * Description: ...
  */
-class edit_nofication extends JFrame implements ActionListener {
+class delete_nofication extends JFrame implements ActionListener{
     private SlangWords dict;
-    private JButton okbtn;
-    private JButton cancel;
+    private JButton delete_one;
+    private JButton delete_all;
     private JList list;
     private String slangword_;
-    private String mean_;
 
-    edit_nofication(SlangWords temp,String slangword,String mean){
+
+    delete_nofication(SlangWords temp,String slangword){
         dict=temp;
         slangword_=slangword;
-        mean_=mean;
+
         setDefaultLookAndFeelDecorated(true);
         setTitle("Notification");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setMinimumSize(new Dimension(400,200));
+        setMinimumSize(new Dimension(500,200));
         //center
         list= new JList();
         JPanel panel = new JPanel(new BorderLayout());
@@ -37,22 +37,22 @@ class edit_nofication extends JFrame implements ActionListener {
 
         //header
         JPanel header = new JPanel(new FlowLayout());
-        JLabel name = new JLabel("Which meaning do you want to update", SwingConstants.CENTER);
+        JLabel name = new JLabel("Which one do you want to delete or you can delete all", SwingConstants.CENTER);
         name.setForeground(Color.red);
         name.setFont(header.getFont().deriveFont (20.0f));
         header.add(name);
 
         //footer
-        okbtn = new JButton("OK");
-        cancel = new JButton("CANCEL");
-        okbtn.setActionCommand("OK");
-        cancel.setActionCommand("CANCEL");
+        delete_one = new JButton("DELETE ONE");
+        delete_all = new JButton("DELETE ALL");
+        delete_one.setActionCommand("ONE");
+        delete_all.setActionCommand("ALL");
 
         JPanel footerpanel = new JPanel();
         footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
-        footerpanel.add(okbtn);
+        footerpanel.add(delete_one);
         footerpanel.add(Box.createRigidArea(new Dimension(20,0)));
-        footerpanel.add(cancel);
+        footerpanel.add(delete_all);
         JPanel tmp = new JPanel(new BorderLayout());
         tmp.add(footerpanel,BorderLayout.LINE_END);
         JPanel panel1 = new JPanel(new FlowLayout());
@@ -64,46 +64,54 @@ class edit_nofication extends JFrame implements ActionListener {
         add(panel);
 
         this.pack();
-        setSize(new Dimension(400,200));
+        setSize(new Dimension(500,200));
         setVisible(true);
-        okbtn.addActionListener(this);
-        cancel.addActionListener(this);
+        delete_one.addActionListener(this);
+        delete_all.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
-        if(command=="OK"){
+        if(command=="ALL"){
+            boolean check = dict.delete(slangword_);
+            if (check == true){
+                JOptionPane.showMessageDialog(null,"DELETE successfully");
+                dict.export_file("data.txt");
+                this.hide();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+        else if(command=="ONE"){
             int index = list.getSelectedIndex();
-            dict.edit_Word(slangword_,index,mean_);
-            JOptionPane.showMessageDialog(null,"Edit successfully");
+            dict.delete(slangword_,index);
+            JOptionPane.showMessageDialog(null,"DELETE successfully");
             dict.export_file("data.txt");
             this.hide();
-        }
-        else{
-            this.hide();
+
         }
     }
 }
-public class edit_UI extends JFrame implements ActionListener {
+public class delete_UI extends JFrame implements ActionListener {
     private JTextField slangword;
-    private JTextField meanings;
 
     private JButton okbtn;
     private JButton cancelbtn;
     SlangWords dict;
-    private edit_nofication extra;
-    edit_UI(SlangWords temp){
+    private delete_nofication extra;
+    delete_UI(SlangWords temp){
         dict=temp;
         setDefaultLookAndFeelDecorated(true);
-        setTitle("UPDATE");
+        setTitle("DELETE");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setMinimumSize(new Dimension(350,200));
+        setMinimumSize(new Dimension(300,200));
         JPanel panel = new JPanel(new BorderLayout());
 
 
         slangword=new JTextField(15);
-        meanings = new JTextField(15);
         okbtn = new JButton("OK");
         cancelbtn = new JButton("Cancel");
         okbtn.setActionCommand("OK");
@@ -117,15 +125,12 @@ public class edit_UI extends JFrame implements ActionListener {
         gbc.anchor= GridBagConstraints.WEST;
         gbc.insets = new Insets(5,5,5,5);
         panel1.add(new JLabel("Slang Word: "),gbc);
-        gbc.gridy++;
-        panel1.add(new JLabel("Meanings: "),gbc);
+
 
         gbc.gridx++;
         gbc.gridy=0;
         gbc.anchor=GridBagConstraints.WEST;
         panel1.add(slangword,gbc);
-        gbc.gridy++;
-        panel1.add(meanings,gbc);
 
 
         //footer
@@ -148,7 +153,7 @@ public class edit_UI extends JFrame implements ActionListener {
         cancelbtn.addActionListener(this);
 
         this.pack();
-        setSize(new Dimension(350,200));
+        setSize(new Dimension(300,200));
         setVisible(true);
     }
 
@@ -158,24 +163,16 @@ public class edit_UI extends JFrame implements ActionListener {
         if(command=="OK"){
             String slangword_= this.slangword.getText();
             if(slangword.getText().length()==0){
-                JOptionPane.showMessageDialog(null,"Please your slangword");
-
-            }
-            String mean_ = this.meanings.getText();
-            if(meanings.getText().length()==0){
-                JOptionPane.showMessageDialog(null,"Please input your meanings");
-                return;
+                JOptionPane.showMessageDialog(null,"Please input your slangword");
             }
             Vector<String>temp = dict.find(slangword_);
-            if(temp!=null)
-                extra = new edit_nofication(dict,slangword_,mean_);
-            else{
-                dict.add_newWord(slangword_,mean_);
-                JOptionPane.showMessageDialog(null,"Edit successfully");
-                dict.export_file("data.txt");
+            if(temp!=null) {
+                extra = new delete_nofication(dict, slangword_);
+                this.hide();
             }
-
-            this.hide();
+            else{
+                JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
         if(command=="Cancel"){

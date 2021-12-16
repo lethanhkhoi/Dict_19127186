@@ -76,14 +76,14 @@ class add_nofication extends JFrame implements ActionListener{
         if(command=="NEW"){
             dict.add_newWord(slangword_,mean_);
             JOptionPane.showMessageDialog(null,"Add successfully");
-            dict.export_file("data.txt",slangword_,mean_);
+            dict.export_file("data.txt");
             this.hide();
         }
         else if(command=="OVERWRITE"){
             int index = list.getSelectedIndex();
             dict.edit_Word(slangword_,index,mean_);
             JOptionPane.showMessageDialog(null,"Add successfully");
-            dict.export_file("data.txt",slangword_,mean_);
+            dict.export_file("data.txt");
             this.hide();
 
         }
@@ -176,7 +176,7 @@ public class add_UI extends JFrame implements ActionListener {
             else{
                 dict.add_newWord(slangword_,mean_);
                 JOptionPane.showMessageDialog(null,"Add successfully");
-                dict.export_file("data.txt",slangword_,mean_);
+                dict.export_file("data.txt");
             }
 
             this.hide();

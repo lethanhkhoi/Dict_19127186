@@ -34,6 +34,7 @@ public class UI extends JPanel implements ActionListener{
     private JList list;
     private add_UI add_ui;
     private edit_UI edit_ui;
+    private delete_UI delete_ui;
     UI()
     {
 
@@ -190,6 +191,7 @@ public class UI extends JPanel implements ActionListener{
         if(command =="RESET"){
             try {
                 dict.import_file("slang.txt");
+                dict.export_file("data.txt");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -199,7 +201,7 @@ public class UI extends JPanel implements ActionListener{
 
         }
         else if(command=="DELETE"){
-
+            delete_ui = new delete_UI(dict);
         }
         else if(command == "UPDATE"){
             edit_ui = new edit_UI(dict);

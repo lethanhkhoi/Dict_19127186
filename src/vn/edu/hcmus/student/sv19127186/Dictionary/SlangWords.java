@@ -26,7 +26,6 @@ public class SlangWords {
         history=new HashMap<String,Vector<String>>();
         order = new Vector<String>();
         String line =br.readLine();
-        line=br.readLine();
 
         while(line!=null) {
             String str[] = line.split("`");
@@ -95,8 +94,9 @@ public class SlangWords {
         }
         else{
             words.get(slangword).remove(index);
-            if(words.get(slangword).size()==0){
+            if(words.get(slangword)==null){
                 words.remove(slangword);
+                order.remove(slangword);
             }
             return true;
         }
@@ -106,6 +106,7 @@ public class SlangWords {
             return false;
         }else{
             words.remove(slangword);
+            order.remove(slangword);
             return true;
         }
     }
@@ -122,15 +123,15 @@ public class SlangWords {
         return tmp.get(rand.nextInt(tmp.size()-1));
     }
 
-    public boolean export_file(String filename,String slangword,String meaning){
+    public boolean export_file(String filename){
         try {
             FileWriter fow= new FileWriter(filename);
             String str = "Slag`Meaning";
             fow.write(str);
-            for(Map.Entry<String,Vector<String>> entry:words.entrySet()){
-                for(int i =0;i<entry.getValue().size();i++){
-                    str= "\n"+entry.getKey()+"`"+entry.getValue().get(i);
-                    fow.write(str);
+            for(int i =1;i<order.size();i++){
+                String key = order.get(i);
+                for(int j =0;j<words.get(key).size();j++){
+                    fow.write("\n"+key+"`"+words.get(key).get(j));
                 }
             }
             fow.close();

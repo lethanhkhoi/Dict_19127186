@@ -33,7 +33,7 @@ public class UI extends JPanel implements ActionListener{
 
     private JList list;
     private add_UI add_ui;
-
+    private edit_UI edit_ui;
     UI()
     {
 
@@ -180,7 +180,7 @@ public class UI extends JPanel implements ActionListener{
                 JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
             }
         }
-        if(command=="difinition"){
+        else if(command=="difinition"){
             String str = search.getText();
             if(str.length()==0)
                 return;
@@ -194,12 +194,15 @@ public class UI extends JPanel implements ActionListener{
                 ex.printStackTrace();
             }
         }
-        if(command=="ADD"){
+        else if(command=="ADD"){
             add_ui= new add_UI(dict);
 
         }
-        if(command=="DELETE"){
+        else if(command=="DELETE"){
 
+        }
+        else if(command == "UPDATE"){
+            edit_ui = new edit_UI(dict);
         }
     }
 }

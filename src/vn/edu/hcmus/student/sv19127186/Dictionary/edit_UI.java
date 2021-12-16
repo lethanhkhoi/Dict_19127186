@@ -1,0 +1,186 @@
+package vn.edu.hcmus.student.sv19127186.Dictionary;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+
+import vn.edu.hcmus.student.sv19127186.Dictionary.*;
+/**
+ * vn.edu.hcmus.student.sv19127186.Dictionary
+ * Created by 84904
+ * Date 15/12/2021 - 10:35 PM
+ * Description: ...
+ */
+class edit_nofication extends JFrame implements ActionListener {
+    private SlangWords dict;
+    private JButton okbtn;
+    private JButton cancel;
+    private JList list;
+    private String slangword_;
+    private String mean_;
+
+    edit_nofication(SlangWords temp,String slangword,String mean){
+        dict=temp;
+        slangword_=slangword;
+        mean_=mean;
+        setDefaultLookAndFeelDecorated(true);
+        setTitle("Notification");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setMinimumSize(new Dimension(400,200));
+        //center
+        list= new JList();
+        JPanel panel = new JPanel(new BorderLayout());
+        Vector<String> str = dict.find(slangword);
+        list.setListData(str);
+
+        //header
+        JPanel header = new JPanel(new FlowLayout());
+        JLabel name = new JLabel("Which meaning do you want to update", SwingConstants.CENTER);
+        name.setForeground(Color.red);
+        name.setFont(header.getFont().deriveFont (20.0f));
+        header.add(name);
+
+        //footer
+        okbtn = new JButton("OK");
+        cancel = new JButton("CANCEL");
+        okbtn.setActionCommand("OK");
+        cancel.setActionCommand("CANCEL");
+
+        JPanel footerpanel = new JPanel();
+        footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
+        footerpanel.add(okbtn);
+        footerpanel.add(Box.createRigidArea(new Dimension(20,0)));
+        footerpanel.add(cancel);
+        JPanel tmp = new JPanel(new BorderLayout());
+        tmp.add(footerpanel,BorderLayout.LINE_END);
+        JPanel panel1 = new JPanel(new FlowLayout());
+        panel1.add(tmp);
+
+        panel.add(header,BorderLayout.PAGE_START);
+        panel.add(new JScrollPane(list),BorderLayout.CENTER);
+        panel.add(panel1,BorderLayout.SOUTH);
+        add(panel);
+
+        this.pack();
+        setSize(new Dimension(400,200));
+        setVisible(true);
+        okbtn.addActionListener(this);
+        cancel.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command =e.getActionCommand();
+        if(command=="OK"){
+            int index = list.getSelectedIndex();
+            dict.edit_Word(slangword_,index,mean_);
+            JOptionPane.showMessageDialog(null,"Edit successfully");
+            dict.export_file("data.txt",slangword_,mean_);
+            this.hide();
+        }
+        else{
+            this.hide();
+        }
+    }
+}
+public class edit_UI extends JFrame implements ActionListener {
+    private JTextField slangword;
+    private JTextField meanings;
+
+    private JButton okbtn;
+    private JButton cancelbtn;
+    SlangWords dict;
+    private edit_nofication extra;
+    edit_UI(SlangWords temp){
+        dict=temp;
+        setDefaultLookAndFeelDecorated(true);
+        setTitle("ADD");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setMinimumSize(new Dimension(350,200));
+        JPanel panel = new JPanel(new BorderLayout());
+
+
+        slangword=new JTextField(15);
+        meanings = new JTextField(15);
+        okbtn = new JButton("OK");
+        cancelbtn = new JButton("Cancel");
+        okbtn.setActionCommand("OK");
+        cancelbtn.setActionCommand("Cancel");
+
+        JPanel panel1 = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx=0;
+        gbc.gridy=0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor= GridBagConstraints.WEST;
+        gbc.insets = new Insets(5,5,5,5);
+        panel1.add(new JLabel("Slang Word: "),gbc);
+        gbc.gridy++;
+        panel1.add(new JLabel("Meanings: "),gbc);
+
+        gbc.gridx++;
+        gbc.gridy=0;
+        gbc.anchor=GridBagConstraints.WEST;
+        panel1.add(slangword,gbc);
+        gbc.gridy++;
+        panel1.add(meanings,gbc);
+
+
+        //footer
+        JPanel footerpanel = new JPanel();
+        footerpanel.setLayout(new BoxLayout(footerpanel,BoxLayout.LINE_AXIS));
+        footerpanel.add(okbtn);
+        footerpanel.add(Box.createRigidArea(new Dimension(20,0)));
+        footerpanel.add(cancelbtn);
+        JPanel tmp = new JPanel(new BorderLayout());
+        tmp.add(footerpanel,BorderLayout.LINE_END);
+
+        JPanel panel2 = new JPanel(new FlowLayout());
+        panel2.add(tmp);
+
+        panel.add(panel1,BorderLayout.CENTER);
+        panel.add(panel2,BorderLayout.SOUTH);
+        add(panel);
+
+        okbtn.addActionListener(this);
+        cancelbtn.addActionListener(this);
+
+        this.pack();
+        setSize(new Dimension(350,200));
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command=e.getActionCommand();
+        if(command=="OK"){
+            String slangword_= this.slangword.getText();
+            if(slangword.getText().length()==0){
+                JOptionPane.showMessageDialog(null,"Please your slangword");
+
+            }
+            String mean_ = this.meanings.getText();
+            if(meanings.getText().length()==0){
+                JOptionPane.showMessageDialog(null,"Please input your meanings");
+                return;
+            }
+            Vector<String>temp = dict.find(slangword_);
+            if(temp!=null)
+                extra = new edit_nofication(dict,slangword_,mean_);
+            else{
+                dict.add_newWord(slangword_,mean_);
+                JOptionPane.showMessageDialog(null,"Edit successfully");
+                dict.export_file("data.txt",slangword_,mean_);
+            }
+
+            this.hide();
+
+        }
+        if(command=="Cancel"){
+            this.hide();
+            return;
+        }
+    }
+}

@@ -926,6 +926,7 @@ TYBG`Thank You Based God
 TSN`The Sports Network
 TSM`Thanks So Much
 TSP`Teaspoon
+<<3fdsfd`fdsf
 CRB`Criminal Records Bureau
 YANKEE`American
 CRC`Cyclic Redundency Check| Chat Room Chuckle
@@ -5149,7 +5150,8 @@ NOYB`None Of Your Business
 CRICKETS`Said after a lame joke to break the silence
 DEFFO`Definitely
 MOTORBOATING`Nuzzling a woman's chest whilst making a noise
-<<3`789
+<<3`123
+<<3`Love
 4COL`For Crying Out Loud
 AITR`Adult In The Room
 BOOZER`Public House| bar

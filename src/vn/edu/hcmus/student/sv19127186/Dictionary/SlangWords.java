@@ -45,13 +45,19 @@ public class SlangWords {
             line = br.readLine();
         }
     }
-    public Vector<String> find(String slangwords){
-        Vector<String>temp = new Vector<String>();
-        if(words.get(slangwords)==null)
+    public Vector<String> find(String slangwords,int type) {
+        Vector<String> temp = new Vector<String>();
+        if (words.get(slangwords) == null)
             return null;
-        for(int i =0;i<words.get(slangwords).size();i++)
-        {
-            temp.add(slangwords+" - "+words.get(slangwords).get(i));
+        if (type == 0) { //0 la tra ra vector de show len list
+            for (int i = 0; i < words.get(slangwords).size(); i++) {
+                temp.add(slangwords + "-" + words.get(slangwords).get(i));
+            }
+        }
+        else{//1 la tra ra vector<String> chua difinition
+            for (int i = 0; i < words.get(slangwords).size(); i++) {
+                temp.add(words.get(slangwords).get(i));
+            }
         }
 
         return temp;
@@ -65,7 +71,7 @@ public class SlangWords {
             for(int i = 0;i<entry.getValue().size();i++){
                 if(entry.getValue().get(i).contains(difi)){
                     String str = entry.getValue().get(i);
-                    temp.add(entry.getKey()+" - "+str);
+                    temp.add(entry.getKey()+"-"+str);
                 }
             }
         }
@@ -115,14 +121,16 @@ public class SlangWords {
         }
     }
     public String random_slangword(){
-        int num = rand.nextInt(words.size()-1);
+        System.out.println(words.size());
+        int num = rand.nextInt((words.size()-1));
         return order.get(num);
     }
     public String random_difinition(){
         int num = rand.nextInt(words.size()-1);
         String temp = order.get(num);
         Vector<String> tmp = words.get(temp);
-        return tmp.get(rand.nextInt(tmp.size()-1));
+        System.out.println(tmp);
+        return tmp.get(rand.nextInt(tmp.size()));
     }
 
     public boolean export_file(String filename){

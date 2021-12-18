@@ -32,7 +32,7 @@ class add_nofication extends JFrame implements ActionListener{
         //center
         list= new JList();
         JPanel panel = new JPanel(new BorderLayout());
-        Vector<String> str = dict.find(slangword);
+        Vector<String> str = dict.find(slangword,0);
         list.setListData(str);
 
         //header
@@ -170,7 +170,7 @@ public class add_UI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,"Please input your meanings");
                 return;
             }
-            Vector<String>temp = dict.find(slangword_);
+            Vector<String>temp = dict.find(slangword_,0);
             if(temp!=null)
                 extra = new add_nofication(dict,slangword_,mean_);
             else{

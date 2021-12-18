@@ -37,6 +37,7 @@ public class UI extends JPanel implements ActionListener{
     private add_UI add_ui;
     private edit_UI edit_ui;
     private delete_UI delete_ui;
+    private Game game;
     UI()
     {
 
@@ -191,7 +192,7 @@ public class UI extends JPanel implements ActionListener{
             String str = search.getText();
             if(str.length()==0)
                 return;
-            Vector<String> temp = dict.find(str);
+            Vector<String> temp = dict.find(str,0);
             if(temp!=null)
             {
                 list.setListData(temp);
@@ -233,8 +234,17 @@ public class UI extends JPanel implements ActionListener{
         }
         else if (command=="RANDOM"){
             String slangword = dict.random_slangword();
-            Vector<String>temp= dict.find(slangword);
+            Vector<String>temp= dict.find(slangword,0);
             list.setListData(temp);
         }
+        else if(command=="game_slang"){
+            game=new Game(dict);
+            game.run_slang();
+        }
+        else if (command=="game_difi"){
+            game = new Game(dict);
+            game.run_difi();
+        }
+
     }
 }

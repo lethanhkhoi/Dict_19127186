@@ -121,7 +121,7 @@ public class SlangWords {
         }
     }
     public String random_slangword(){
-        System.out.println(words.size());
+
         int num = rand.nextInt((words.size()-1));
         return order.get(num);
     }
@@ -129,7 +129,7 @@ public class SlangWords {
         int num = rand.nextInt(words.size()-1);
         String temp = order.get(num);
         Vector<String> tmp = words.get(temp);
-        System.out.println(tmp);
+
         return tmp.get(rand.nextInt(tmp.size()));
     }
 

@@ -24,7 +24,6 @@ public class UI extends JPanel implements ActionListener{
     private JButton update;
     private JButton play_slangword;
     private JButton play_difinition;
-    private JButton import_;
     private JButton reset_;
     private JButton search_slang;
     private JButton search_difi;
@@ -56,7 +55,6 @@ public class UI extends JPanel implements ActionListener{
         update.setActionCommand("UPDATE");
         play_slangword = new JButton("play game with slangword");
         play_difinition = new JButton("play game with difinition");
-        import_ = new JButton("import");
         reset_ =new JButton("reset");
         reset_.setActionCommand("RESET");
         history = new JButton("History");
@@ -116,20 +114,15 @@ public class UI extends JPanel implements ActionListener{
         delete.setPreferredSize(new Dimension(141, 26));
         chucnang.add(delete,gbc);
         gbc.gridx++;
-        import_.setPreferredSize(new Dimension(141, 26));
-        import_.setActionCommand("import");
-        chucnang.add(import_,gbc);
+        reset_.setPreferredSize(new Dimension(141, 26));
+        reset_.setActionCommand("RESET");
+        chucnang.add(reset_,gbc);
 
         gbc.gridy++;
         gbc.gridx=0;
-        reset_.setPreferredSize(new Dimension(141, 26));
-        chucnang.add(reset_,gbc);
-        gbc.gridx++;
         history.setPreferredSize(new Dimension(141, 26));
         chucnang.add(history,gbc);
-
-        gbc.gridy++;
-        gbc.gridx=0;
+        gbc.gridx++;
         random_.setPreferredSize(new Dimension(141, 26));
         chucnang.add(random_,gbc);
 
@@ -158,7 +151,6 @@ public class UI extends JPanel implements ActionListener{
         add(chucnang,BorderLayout.LINE_START);
         add(new JScrollPane(list), BorderLayout.CENTER);
         add(panel,BorderLayout.SOUTH);
-        import_.addActionListener(this);
 
         search_slang.addActionListener(this);
         search_difi.addActionListener(this);
@@ -191,7 +183,11 @@ public class UI extends JPanel implements ActionListener{
         if (command == "slang") {
             String str = search.getText();
             if(str.length()==0)
-                return;
+            {
+                Vector<String> word_ = new Vector<String>();
+                this.list.setListData(word_);
+            }
+            else{
             Vector<String> temp = dict.find(str,0);
             if(temp!=null)
             {
@@ -200,7 +196,7 @@ public class UI extends JPanel implements ActionListener{
             }
             else{
                 JOptionPane.showMessageDialog(null,"Cannot find this slang word","Error Message", JOptionPane.ERROR_MESSAGE);
-            }
+            }}
         }
         else if(command=="difinition"){
             String str = search.getText();
@@ -223,9 +219,23 @@ public class UI extends JPanel implements ActionListener{
         }
         else if(command=="DELETE"){
             delete_ui = new delete_UI(dict);
+            this.search.setText("");
+            String str = this.search.getText();
+            if(str.length()==0)
+            {
+                Vector<String> word_ = new Vector<String>();
+                this.list.setListData(word_);
+            }
+
         }
         else if(command == "UPDATE"){
             edit_ui = new edit_UI(dict);
+            String str = this.search.getText();
+            if(str.length()==0)
+            {
+                Vector<String> word_ = new Vector<String>();
+                this.list.setListData(word_);
+            }
         }
         else if (command=="HISTORY"){
             Vector<String>temp = dict.view_history();

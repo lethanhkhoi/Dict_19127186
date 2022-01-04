@@ -64,6 +64,14 @@ public class SlangWords {
     }
     public void update_history(String slangwords){
         history.put(slangwords,words.get(slangwords));
+        try {
+            FileWriter file = new FileWriter("history.txt",true);
+            file.write(slangwords+"\n");
+            file.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public Vector<String> find_byDefinition(String difi){
         Vector<String>temp = new Vector<String>();

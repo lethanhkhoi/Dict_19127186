@@ -1,0 +1,15 @@
+Họ Tên: Lê Thành Khôi - 19127186
+1/ Tìm kiếm theo slangword:		10
+2/ Tìm kiếm theo difinition:		10
+3/ Xem history slangword:		10
+4/ Add slangword:			10
+5/ Edit slangword:			10
+6/ Delete slangword:			10
+7/ Reset danh sách slangword:		10
+8/ Random 1 slangword:			10
+9/ Đố vui với slangword:		10
+10/ Đố vui với difinition:		10
+Tổng:					100
+
+Link youtube:
+https://www.youtube.com/watch?v=VnOBBwdOdqA
